@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#1e293b" />
   <title>Malla Curricular – Trabajo Social</title>
   <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="icon" href="icons/icon-192.png">
   <style>
     :root{
@@ -37,6 +38,7 @@
     .subtitle { margin:0 auto 14px; max-width: 900px; color: #cbd5e1; font-size: clamp(13px, 2.3vw, 16px); }
     .toolbar { display:flex; justify-content:center; gap:8px; flex-wrap: wrap; padding: 6px 12px 0; margin-bottom: 8px; }
     button, .btn {
+      
       cursor: pointer; background:#ffffff; color:#0b1220; border:none; border-radius:14px; padding:12px 14px;
       font-weight: 700; min-height: 44px; min-width: 44px; box-shadow: 0 2px 8px rgba(0,0,0,.25);
     }
@@ -199,6 +201,15 @@ main{ width: 100%; }
   @keyframes celebrateIn{ from{ transform: translateY(6px) scale(.98); opacity:0 } to{ transform:none; opacity:1 } }
   @keyframes bob{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-6px) } }
     .confetti-canvas{ position: fixed; inset:0; pointer-events:none; z-index:49; }
+  .install-fab{
+      position: fixed; right: 16px; bottom: calc(env(safe-area-inset-bottom) + 16px);
+      z-index: 70; border-radius: 999px; padding: 14px 16px; min-height: 48px;
+      font-weight: 900; box-shadow: 0 10px 24px rgba(0,0,0,.35);
+      background:#34d399; color:#0b1220; border:none; display:none;
+    }
+    .install-fab.show{ display:inline-flex; align-items:center; gap:8px; }
+    .install-fab:active{ transform: translateY(1px); }
+    @media (max-width: 640px){ .install-fab{ right: 12px; bottom: calc(env(safe-area-inset-bottom) + 12px); } }
   </style>
 </head>
 <body>
@@ -284,6 +295,7 @@ main{ width: 100%; }
   </div>
 </div>
 
+  <button id="installFab" class="install-fab">📲 Instalar app</button>
   <footer class="footer">App creada por Daniel Olave Valle · Agosto 2025</footer>
 
   <script>

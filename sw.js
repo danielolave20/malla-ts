@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ts-malla-cache-v1.4.1';
+const CACHE_NAME = 'ts-malla-cache-v1.5.0';
 const PRECACHE_ASSETS = [
   './',
   './index.html',
@@ -11,12 +11,18 @@ const PRECACHE_ASSETS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS))
+    .then(()=>self.skipWaiting())
+    ||
     caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_ASSETS)).then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS))
+    .then(()=>self.skipWaiting())
+    ||
     caches.keys().then(keys => Promise.all(keys.map(k => { if (k !== CACHE_NAME) return caches.delete(k)})))
     .then(() => self.clients.claim())
   );

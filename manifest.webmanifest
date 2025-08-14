@@ -1,0 +1,23 @@
+{
+  "name": "Malla Curricular – Trabajo Social",
+  "short_name": "Malla TS",
+  "description": "PWA para gestionar la malla de Trabajo Social (8 trimestres, Advance).",
+  "start_url": "./?source=pwa",
+  "display": "standalone",
+  "background_color": "#121826",
+  "theme_color": "#1e293b",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "any",
+  "lang": "es"
+}

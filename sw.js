@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ts-malla-cache-v1.1.0';
+const CACHE_NAME = 'ts-malla-cache-v1.4.1';
 const PRECACHE_ASSETS = [
   './',
   './index.html',

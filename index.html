@@ -9,17 +9,13 @@
   <link rel="icon" href="icons/icon-192.png">
   <style>
     :root{
-      --bg-overlay: rgba(0,0,0,.45);
-      --card-bg: rgba(255,255,255,.9);
-      --card-fg: #0b1220;
-      --muted: #475569;
+      --bg-overlay: rgba(0,0,0,.30);
+      --muted: #94a3b8;
       --accent: #2563eb;
       --ok: #10b981;
-      --warn: #f59e0b;
-      --danger: #ef4444;
-      --tag-general: #3b82f6;       /* azul */
-      --tag-licenciatura: #22c55e;  /* verde */
-      --tag-especialidad: #a855f7;  /* violeta */
+      --tag-general: #314559;       /* menta/teal */
+      --tag-licenciatura: #ff6fa0;  /* rosa */
+      --tag-especialidad: #56c6ad;  /* azul profundo */
       --blocked: #cbd5e1;
       --year1: #06b6d4;
       --year2: #8b5cf6;
@@ -29,109 +25,179 @@
     html, body {
       margin: 0; padding: 0;
       max-width: 100vw; overflow-x: hidden;
-      height: 100%; color: #e5e7eb; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      height: 100%; color: #e5e7eb; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
       background: #0b1220;
     }
-    body::before{
-      content:""; position: fixed; inset:0; z-index:-2;
+    body::before{ content:""; position: fixed; inset:0; z-index:-2;
       background: url('assets/bg-default.png') center/cover no-repeat fixed;
     }
-    body::after{
-      content:""; position: fixed; inset:0; z-index:-1; background: var(--bg-overlay);
-    }
-    header {
-      padding: calc(env(safe-area-inset-top) + 16px) 16px 8px;
-      text-align: center;
-    }
+    body::after{ content:""; position: fixed; inset:0; z-index:-1; background: var(--bg-overlay); }
+    header { padding: calc(env(safe-area-inset-top) + 16px) 16px 8px; text-align: center; }
     h1 { margin: 0 0 6px; font-weight: 800; font-size: clamp(22px, 4vw, 36px); }
     .subtitle { margin:0 auto 14px; max-width: 900px; color: #cbd5e1; font-size: clamp(13px, 2.3vw, 16px); }
-    .toolbar {
-      display:flex; justify-content:center; gap:8px; flex-wrap: wrap;
-      padding: 6px 12px 0; margin-bottom: 8px;
-    }
+    .toolbar { display:flex; justify-content:center; gap:8px; flex-wrap: wrap; padding: 6px 12px 0; margin-bottom: 8px; }
     button, .btn {
-      cursor: pointer;
-      background:#ffffff; color:#0b1220; border:none; border-radius:14px; padding:12px 14px;
-      font-weight: 700; min-height: 44px; min-width: 44px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+      cursor: pointer; background:#ffffff; color:#0b1220; border:none; border-radius:14px; padding:12px 14px;
+      font-weight: 700; min-height: 44px; min-width: 44px; box-shadow: 0 2px 8px rgba(0,0,0,.25);
     }
     button:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
     .menu { position:relative; }
-    .menu-panel {
-      position:absolute; right:0; top:calc(100% + 8px);
+    .menu-panel { position:absolute; right:0; top:calc(100% + 8px);
       background: #0f172a; border:1px solid #334155; border-radius: 14px; padding:8px; min-width: 280px;
       display:none; box-shadow: 0 10px 24px rgba(0,0,0,.35);
     }
     .menu.open .menu-panel { display:block; }
     .menu-item { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 12px; border-radius:10px; color:#e5e7eb; }
     .menu-item:hover { background:#111827; }
-    .switch {
-      position: relative; width: 54px; height: 30px; background:#1f2937; border-radius: 999px; border:1px solid #374151;
-    }
+    .switch { position: relative; width: 54px; height: 30px; background:#1f2937; border-radius: 999px; border:1px solid #374151; }
     .switch input{ display:none; }
-    .switch .knob {
-      position:absolute; top:2px; left:2px; width:26px; height:26px; border-radius:50%;
-      background:#9ca3af; transition: all .2s ease;
-    }
+    .switch .knob { position:absolute; top:2px; left:2px; width:26px; height:26px; border-radius:50%; background:#9ca3af; transition: all .2s ease; }
     .switch input:checked + .knob { left:26px; background:#34d399; }
-    main { padding: 8px 14px calc(env(safe-area-inset-bottom) + 24px); max-width: 1200px; margin: 0 auto; }
+    main { padding: 8px 14px calc(env(safe-area-inset-bottom) + 24px); max-width: 1400px; margin: 0 auto; }
+
     details.legend { background: rgba(15,23,42,.7); border:1px solid #334155; border-radius: 14px; padding: 10px 12px; margin-bottom: 12px; }
     details.legend summary{ cursor: pointer; font-weight:800; }
     .legend-pill { display:inline-flex; align-items:center; gap:8px; margin-right:12px; font-size: 14px; }
-    .pill { display:inline-block; padding:4px 10px; border-radius: 999px; font-weight: 800; color:#0b1220; }
+    .pill { display:inline-block; padding:6px 12px; border-radius: 999px; font-weight: 800; color:#0b1220; }
     .pill.general{ background: var(--tag-general); }
-    .pill.licenciatura{ background: var(--tag-licenciatura); }
-    .pill.especialidad{ background: var(--tag-especialidad); }
-    section.year {
-      background: rgba(15,23,42,.7); border:1px solid #334155; border-radius: 16px; padding: 10px 12px; margin: 12px 0;
+    .pill.licenciatura{ background: var(--tag-licenciatura); color:#fff; }
+    .pill.especialidad{ background: var(--tag-especialidad); color:#fff; }
+
+    /* Column layout for trimestres */
+    .year-block { margin: 18px 0; }
+    .year-title{ font-weight:900; margin: 4px 0 10px; color:#e5e7eb; text-transform: uppercase; letter-spacing: .08em; }
+    .tri-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px; }
+    .tri-col { background: rgba(15,23,42,.7); border:1px solid #334155; border-radius: 16px; padding: 12px; }
+    .tri-head { font-weight:800; color:#cbd5e1; margin-bottom: 10px; text-transform: uppercase; font-size: 14px; letter-spacing: .06em; }
+
+    .course {
+      position: relative; border-radius: 12px; padding: 12px; margin-bottom: 10px;
+      min-height: 56px; display:flex; align-items:center; justify-content:center; text-align:center;
+      font-weight: 900; line-height: 1.2; color:#0b1220; cursor: pointer; user-select: none;
+      transition: transform .05s ease, filter .2s ease, opacity .2s ease;
     }
-    .year-title{ display:flex; align-items:center; justify-content: space-between; gap:8px; }
-    .progress {
-      width:100%; height:12px; background:#0b1220; border-radius:999px; border:1px solid #334155; overflow:hidden;
+    .course.general{ background: var(--tag-general); color:#fff; }
+    .course.licenciatura{ background: var(--tag-licenciatura); color:#fff; }
+    .course.especialidad{ background: var(--tag-especialidad); color:#fff; }
+
+    .course.blocked { filter: grayscale(0.75) brightness(0.75); opacity: .7; cursor: not-allowed; }
+.show-auth .course.blocked{ cursor: pointer; opacity:.9; filter: grayscale(.35) brightness(.95); }
+.course.blocked::after{
+  content: "Bloqueado"; position:absolute; right:8px; top:8px;
+  background:#0b1220; color:#fff; font-size:11px; padding:2px 8px; border-radius:999px; opacity:.8;
+}
+.show-auth .course.blocked::after{
+  content: "Autorizar"; background:#fbbf24; color:#0b1220; opacity:1;
+}
+.course.authorized::after{
+  content:"Autorizado"; position:absolute; right:8px; top:8px; background:#fde68a; color:#92400e;
+  font-size:11px; padding:2px 8px; border-radius:999px; opacity:1;
+}
+    .course.blocked::after{
+      content: "Bloqueado"; position:absolute; right:8px; top:8px;
+      background:#0b1220; color:#fff; font-size:11px; padding:2px 8px; border-radius:999px; opacity:.8;
     }
+    .course.approved {
+  outline: 3px solid #22d3ee; outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.18) inset, 0 6px 14px rgba(0,0,0,.25);
+  position: relative;
+  opacity: .88;
+}
+.course.approved .t {
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 5px;
+  opacity: .75;
+}
+.course.approved::before{
+  content:"✓ Aprobado";
+  position:absolute; left:10px; top:8px;
+  background:#34d399; color:#0b1220;
+  font-size:11px; font-weight:900;
+  padding:2px 8px; border-radius:999px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+    .course.approved .t { text-decoration: line-through; }
+
+    .metrics { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:10px; margin: 12px 0; }
+    .metric-card{ background: rgba(15,23,42,.7); border:1px solid #334155; border-radius: 16px; padding:12px; }
+    .metric-title{ font-weight:800; color:#cbd5e1; margin-bottom: 8px; }
+    .big { font-size: 28px; font-weight: 900; }
+    .progress { width:100%; height:12px; background:#0b1220; border-radius:999px; border:1px solid #334155; overflow:hidden; }
     .bar { height:100%; width:0%; background: linear-gradient(90deg, #22d3ee, #60a5fa); }
     .bar.year1{ background: linear-gradient(90deg, var(--year1), #60a5fa); }
     .bar.year2{ background: linear-gradient(90deg, var(--year2), #a78bfa); }
     .bar.year3{ background: linear-gradient(90deg, var(--year3), #f59e0b); }
-    .grid {
-      display:grid; gap:10px;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    }
-    .card {
-      position: relative;
-      background: var(--card-bg); color: var(--card-fg);
-      border-radius: 16px; padding: 10px; min-height: 160px; display:flex; flex-direction: column; justify-content: space-between;
-      aspect-ratio: 1 / 1;
-    }
-    .card .title{ font-weight:800; font-size: 14px; line-height: 1.2; }
-    .card .tag{ margin-top:6px; }
-    .blocked-overlay{
-      position:absolute; inset:0; background: rgba(226,232,240,.6); border: 2px dashed #64748b; border-radius: 16px; display:flex; align-items:center; justify-content:center;
-      color:#334155; font-weight:800; font-size: 14px; text-align:center; padding: 6px;
-    }
-    .actions{ display:flex; align-items:center; justify-content: space-between; gap:6px; }
-    .note { width: 84px; padding:8px; border-radius: 10px; border:1px solid #94a3b8; font-weight:700; }
-    .approve { display:flex; align-items:center; gap:6px; }
-    .approve input{ width: 18px; height: 18px; }
-    .approved .title { text-decoration: line-through; opacity: .7; }
-    .auth-row { display:none; align-items:center; justify-content: space-between; margin-top: 6px; }
-    .auth-pill{ background:#fde68a; color:#92400e; font-weight:800; padding:4px 8px; border-radius: 999px; }
-    .auth-switch{ transform: scale(.9); }
-    .show-auth .auth-row{ display:flex; }
-    .metrics {
-      display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:10px; margin: 12px 0;
-    }
-    .metric-card{ background: rgba(15,23,42,.7); border:1px solid #334155; border-radius: 16px; padding:12px; }
-    .metric-title{ font-weight:800; color:#cbd5e1; margin-bottom: 8px; }
-    .big { font-size: 28px; font-weight: 900; }
-    .dist { font-weight:900; }
-    .footer {
-      padding: 18px; text-align:center; color:#cbd5e1; font-size: 12px;
-    }
-    /* Modal Felicitaciones */
+
+    .footer { padding: 18px; text-align:center; color:#cbd5e1; font-size: 12px; }
+    /* Responsive tablet tweaks */
+@media (max-width: 1200px){
+  main{ max-width: 100vw; padding: 8px 10px calc(env(safe-area-inset-bottom) + 20px); }
+  .tri-grid{ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .tri-col{ padding: 10px; }
+  .course{ padding: 12px; min-height: 58px; border-radius: 12px; }
+}
+@media (max-width: 820px){ /* tablets chicas / teléfonos grandes en vertical */
+  header{ padding: calc(env(safe-area-inset-top) + 12px) 10px 6px; }
+  h1{ font-size: clamp(20px, 6vw, 28px); }
+  .subtitle{ font-size: clamp(12px, 3.3vw, 14px); }
+  .toolbar{ gap:6px; }
+  .tri-grid{ grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+  .course{ padding: 10px; min-height: 54px; }
+  .metric-card{ padding:10px; }
+}
+@media (max-width: 600px){ /* pantallas ~6" en vertical */
+  .tri-grid{ grid-template-columns: 1fr; gap: 8px; }
+  .course{ padding: 10px; min-height: 50px; }
+  .year-title{ font-size: 14px; }
+}
+/* Evitar scroll horizontal y aprovechar ancho completo */
+html, body{ max-width: 100vw; overflow-x: hidden; }
+main{ width: 100%; }
+/* Modal Felicitaciones (celebration upgrade) */
     .modal{ position: fixed; inset:0; background: rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index: 50; }
     .modal.open { display:flex; }
-    .modal-card{ background:#0f172a; color:#e5e7eb; border:1px solid #334155; padding: 18px; border-radius: 18px; width:min(560px, 92vw); text-align:center; position: relative; }
+    .modal-card{
+    background: radial-gradient(1200px 600px at 50% -20%, rgba(99,102,241,.25), transparent 40%),
+                linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
+    color:#eaf2ff;
+    border:1px solid #364152;
+    padding: 22px;
+    border-radius: 22px;
+    width:min(640px, 92vw);
+    text-align:center;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+    animation: celebrateIn .35s ease-out;
+  }
+  .cele-title{
+    font-size: clamp(22px, 3.2vw, 34px);
+    font-weight: 900;
+    margin: 6px 0 10px;
+    background: linear-gradient(90deg, #fcd34d, #f59e0b, #fda4af);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    letter-spacing: .02em;
+  }
+  .cele-sub{
+    font-size: clamp(15px, 1.9vw, 18px);
+    line-height: 1.6;
+    color:#dbeafe;
+    margin: 6px 0 4px;
+  }
+  .cele-hr{ height:1px; background: linear-gradient(90deg, transparent, #334155, transparent); margin:12px 0; }
+  .cele-emoji{ font-size: 38px; display:inline-block; animation: bob 2s ease-in-out infinite; }
+  .cele-actions{ display:flex; justify-content:center; gap:12px; margin-top:14px; }
+  .btnx{
+    cursor:pointer; border:none; padding:12px 18px; min-width:120px; min-height:44px;
+    border-radius:16px; font-weight:900; font-size:16px; box-shadow: 0 6px 16px rgba(0,0,0,.3);
+    transition: transform .05s ease, filter .2s ease, box-shadow .2s ease;
+    color:#0b1220; background:#fff;
+  }
+  .btnx.primary{ background:#34d399; }
+  .btnx.secondary{ background:#93c5fd; }
+  .btnx:active{ transform: translateY(1px); filter: brightness(.98); }
+  @keyframes celebrateIn{ from{ transform: translateY(6px) scale(.98); opacity:0 } to{ transform:none; opacity:1 } }
+  @keyframes bob{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-6px) } }
     .confetti-canvas{ position: fixed; inset:0; pointer-events:none; z-index:49; }
   </style>
 </head>
@@ -151,39 +217,32 @@
               <span class="knob"></span>
             </label>
           </div>
-          <div class="menu-item" id="expandAll"><span>Expandir todo</span><span class="btn" style="padding:6px 10px;">+</span></div>
-          <div class="menu-item" id="collapseAll"><span>Colapsar todo</span><span class="btn" style="padding:6px 10px;">−</span></div>
-          <div class="menu-item" id="exportBtn"><span>Exportar estado (JSON)</span><span class="btn" style="padding:6px 10px;">⭳</span></div>
-          <div class="menu-item" id="importBtn"><span>Importar estado (JSON)</span><span class="btn" style="padding:6px 10px;">⭱</span></div>
+          
+          
           <div class="menu-item" id="resetBtn"><span>Reiniciar todo</span><span class="btn" style="padding:6px 10px;">⟲</span></div>
-          <div class="menu-item" id="bgBtn"><span>Cambiar fondo</span><span class="btn" style="padding:6px 10px;">🖼️</span></div>
+          
         </div>
       </div>
-      <input id="fileImport" type="file" accept="application/json" style="display:none">
-      <input id="fileBg" type="file" accept="image/*" style="display:none">
+      
+      
     </div>
   </header>
 
   <main>
-    <details class="legend">
-      <summary>Leyenda de colores</summary>
-      <p style="margin:10px 0 0;">
-        <span class="legend-pill"><span class="pill general"></span> General</span>
-        <span class="legend-pill"><span class="pill licenciatura"></span> Licenciatura</span>
-        <span class="legend-pill"><span class="pill especialidad"></span> Especialidad</span>
-      </p>
-    </details>
+    <div class="legend always">
+  <div class="legend-title">Leyenda de colores</div>
+  <p class="legend-body">
+    <span class="legend-pill"><span class="pill general"></span> General</span>
+    <span class="legend-pill"><span class="pill licenciatura"></span> Licenciatura</span>
+    <span class="legend-pill"><span class="pill especialidad"></span> Especialidad</span>
+  </p>
+</div>
 
     <section class="metrics" aria-live="polite">
       <div class="metric-card">
         <div class="metric-title">Progreso global</div>
         <div class="progress" aria-label="Progreso global"><div id="barGlobal" class="bar" style="width:0%"></div></div>
         <div class="big" id="pctGlobal">0%</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-title">Promedio global</div>
-        <div class="big" id="avgGlobal">—</div>
-        <div class="dist" id="distGlobal">Sin promedio</div>
       </div>
       <div class="metric-card">
         <div class="metric-title">Progreso Año 1</div>
@@ -206,161 +265,126 @@
   </main>
 
   <div id="modalCongrats" class="modal" role="dialog" aria-modal="true" aria-labelledby="congratsTitle">
-    <div class="modal-card">
-      <h2 id="congratsTitle" style="margin-top:0;">¡Felicitaciones!</h2>
-      <p>Completaste toda la malla. 🎓✨</p>
-      <div style="display:flex; justify-content:center; gap:10px; margin-top:12px;">
-        <button id="closeCongrats">Cerrar</button>
-        <button id="resetFromCongrats">Reiniciar</button>
-      </div>
+  <div class="modal-card">
+    <div class="cele-emoji" aria-hidden="true">🎓✨</div>
+    <h2 id="congratsTitle" class="cele-title">¡Meta Alcanzada!</h2>
+    <div class="cele-hr"></div>
+    <p class="cele-sub">
+      Has completado <strong>toda tu malla curricular</strong> con éxito.<br/>
+      Estás a un paso de convertirte oficialmente en <strong>Trabajador Social</strong>.
+    </p>
+    <p class="cele-sub">
+      Que esta victoria sea el inicio de una carrera llena de logros, impacto positivo y orgullo.
+      <br/><strong>¡Tu esfuerzo y constancia hoy brillan más que nunca!</strong>
+    </p>
+    <div class="cele-actions">
+      <button id="closeCongrats" class="btnx primary">¡Gracias! 🎉</button>
+      <button id="resetFromCongrats" class="btnx secondary">Reiniciar</button>
     </div>
   </div>
+</div>
 
   <footer class="footer">App creada por Daniel Olave Valle · Agosto 2025</footer>
 
   <script>
-  // ----- Datos de la malla -----
-  const curriculum = [
-    { year: 1, tri: 'T1', courses: [
-      { title:'Fundamentos del Trabajo Social', tag:'General' },
-      { title:'Antropología Cultural', tag:'General' },
-      { title:'Economía y Sociedad', tag:'General' },
-      { title:'Historia y Política Social de Chile', tag:'General' },
-    ]},
-    { year: 1, tri: 'T2', courses: [
-      { title:'Fundamentos de la Intervención Social', tag:'General' },
-      { title:'Teorías Sociológicas', tag:'General' },
-      { title:'Psicología Social', tag:'General' },
-      { title:'Justicia Social y Derechos Humanos', tag:'General' },
-    ]},
-    { year: 1, tri: 'T3', courses: [
-      { title:'Enfoques y Estrategias de la Intervención Social', tag:'General' },
-      { title:'Epistemología de las Ciencias Sociales', tag:'General' },
-      { title:'Salud Mental', tag:'General' },
-      { title:'Políticas Sociales', tag:'General' },
-    ]},
-    { year: 2, tri: 'T4', courses: [
-      { title:'Trabajo Social con Personas y Familias', tag:'Licenciatura' },
-      { title:'Lógica de la Investigación Social', tag:'Licenciatura' },
-      { title:'Pobreza y Exclusión Social', tag:'Licenciatura' },
-      { title:'Diseño de Proyectos Sociales', tag:'Licenciatura' },
-    ]},
-    { year: 2, tri: 'T5', courses: [
-      { title:'Trabajo Social con Organizaciones', tag:'Licenciatura' },
-      { title:'Investigación Social Cualitativa', tag:'Licenciatura' },
-      { title:'Investigación Social Cuantitativa', tag:'Licenciatura' },
-      { title:'Evaluación de Proyectos Sociales', tag:'Licenciatura' },
-    ]},
-    { year: 2, tri: 'T6', courses: [
-      { title:'Trabajo Social y Desarrollo Local', tag:'Licenciatura' },
-      { title:'Análisis de los Datos Cualitativos', tag:'Licenciatura' },
-      { title:'Análisis de los Datos Cuantitativos', tag:'Licenciatura' },
-      { title:'Perspectivas Éticas en Trabajo Social', tag:'Licenciatura' },
-    ]},
-    { year: 3, tri: 'T7', courses: [
-      { title:'Módulo Integrador: Intervención Aplicada I', tag:'Especialidad' },
-      { title:'Seminario de Título I', tag:'Especialidad' },
-      { title:'Análisis de Políticas Sociales', tag:'Especialidad' },
-      { title:'Electivo I', tag:'Especialidad' },
-    ]},
-    { year: 3, tri: 'T8', courses: [
-      { title:'Módulo Integrador: Intervención Aplicada II', tag:'Especialidad', prereq: 'Módulo Integrador: Intervención Aplicada I' },
-      { title:'Seminario de Título II', tag:'Especialidad', prereq: 'Seminario de Título I' },
-      { title:'Gestión e Innovación de la Intervención Social', tag:'Especialidad' },
-      { title:'Electivo II', tag:'Especialidad', prereq: 'Electivo I' },
-    ]},
-  ];
+// ----- Datos -----
+const curriculum = [
+  { year: 1, tri: 'T1', courses: [
+    { title:'Fundamentos del Trabajo Social', tag:'Especialidad' },
+    { title:'Antropología Cultural', tag:'General' },
+    { title:'Economía y Sociedad', tag:'General' },
+    { title:'Historia y Política Social de Chile', tag:'General' },
+  ]},
+  { year: 1, tri: 'T2', courses: [
+    { title:'Fundamentos de la Intervención Social', tag:'Especialidad' },
+    { title:'Teorías Sociológicas', tag:'General' },
+    { title:'Psicología Social', tag:'General' },
+    { title:'Justicia Social y Derechos Humanos', tag:'General' },
+  ]},
+  { year: 1, tri: 'T3', courses: [
+    { title:'Enfoques y Estrategias de la Intervención Social', tag:'Especialidad' },
+    { title:'Epistemología de las Ciencias Sociales', tag:'General' },
+    { title:'Salud Mental', tag:'General' },
+    { title:'Políticas Sociales', tag:'Especialidad' },
+  ]},
+  { year: 2, tri: 'T4', courses: [
+    { title:'Trabajo Social con Personas y Familias', tag:'Especialidad' },
+    { title:'Lógica de la Investigación Social', tag:'Licenciatura' },
+    { title:'Pobreza y Exclusión Social', tag:'Especialidad' },
+    { title:'Diseño de Proyectos Sociales', tag:'Especialidad' },
+  ]},
+  { year: 2, tri: 'T5', courses: [
+    { title:'Trabajo Social con Organizaciones', tag:'Especialidad' },
+    { title:'Investigación Social Cualitativa', tag:'Licenciatura' },
+    { title:'Investigación Social Cuantitativa', tag:'Licenciatura' },
+    { title:'Evaluación de Proyectos Sociales', tag:'Licenciatura' },
+  ]},
+  { year: 2, tri: 'T6', courses: [
+    { title:'Trabajo Social y Desarrollo Local', tag:'Especialidad' },
+    { title:'Análisis de los Datos Cualitativos', tag:'Licenciatura' },
+    { title:'Análisis de los Datos Cuantitativos', tag:'Licenciatura' },
+    { title:'Perspectivas Éticas en Trabajo Social', tag:'Especialidad' },
+  ]},
+  { year: 3, tri: 'T7', courses: [
+    { title:'Módulo Integrador: Intervención Aplicada I', tag:'Especialidad' },
+    { title:'Seminario de Título I', tag:'Licenciatura' },
+    { title:'Análisis de Políticas Sociales', tag:'Especialidad' },
+    { title:'Electivo I', tag:'Especialidad' },
+  ]},
+  { year: 3, tri: 'T8', courses: [
+    { title:'Módulo Integrador: Intervención Aplicada II', tag:'Especialidad', prereq: 'Módulo Integrador: Intervención Aplicada I' },
+    { title:'Seminario de Título II', tag:'Licenciatura', prereq: 'Seminario de Título I' },
+    { title:'Gestión e Innovación de la Intervención Social', tag:'Especialidad' },
+    { title:'Electivo II', tag:'Especialidad', prereq: 'Electivo I' },
+  ]},
+];;
 
-  // ----- Estado -----
-  const defaultState = {
-    approvals: {},        // { courseId: boolean }
-    notes: {},            // { courseId: number }
-    auth: {},             // { courseId: boolean }
-    expanded: {},         // { triId: boolean }
-    bg: 'assets/bg-default.png'
-  };
-  const STATE_KEY = 'ts_malla_state_v1_1_0';
-  let state = loadState();
+// ----- Estado -----
+const defaultState = {
+  approvals: {},        // { courseId: boolean }
+  auth: {},             // { courseId: boolean }
+  bg: 'assets/bg-default.png'
+};
+const STATE_KEY = 'ts_malla_state_v1_3_3';
+let state = loadState();
 
-  // ----- Helpers -----
-  function slug(str){ return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
-  function courseId(tri, title){ return slug(tri+'-'+title); }
-  function triId(tri){ return slug('tri-'+tri); }
-  function saveState(){ localStorage.setItem(STATE_KEY, JSON.stringify(state)); }
-  function loadState(){
-    try{
-      const raw = localStorage.getItem(STATE_KEY);
-      if(raw){ return { ...defaultState, ...JSON.parse(raw) }; }
-    }catch(e){}
-    return structuredClone(defaultState);
+function slug(str){ return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+function courseId(tri, title){ return slug(tri+'-'+title); }
+function saveState(){ localStorage.setItem(STATE_KEY, JSON.stringify(state)); }
+function loadState(){
+  try{ const raw = localStorage.getItem(STATE_KEY); if(raw){ return { ...defaultState, ...JSON.parse(raw) }; } }catch(e){}
+  return structuredClone(defaultState);
+}
+
+// Background swap support (fixed image)
+function applyBackground(){
+  const styleEl = document.getElementById('dynamic-bg') || (()=>{ const s=document.createElement('style'); s.id='dynamic-bg'; document.head.appendChild(s); return s; })();
+  styleEl.textContent = `body::before{ background-image:url('${state.bg}'); }`;
+}
+
+const yearsContainer = document.getElementById('years');
+function render(){
+  yearsContainer.innerHTML = '';
+
+  const triOrder = curriculum.map(s => s.tri);
+  const triApprovedMap = {};
+  for(const sec of curriculum){
+    triApprovedMap[sec.tri] = sec.courses.every(c => !!state.approvals[courseId(sec.tri, c.title)]);
   }
 
-  // Apply background
-  function applyBackground(){
-    document.body.style.setProperty('--bg-overlay', 'rgba(0,0,0,.45)');
-    document.body.style.backgroundColor = '#0b1220';
-    document.body.style.setProperty('background', '#0b1220');
-    document.body.style.setProperty('background-image', 'none');
-    document.body.style.setProperty('background-size', 'cover');
-    document.body.style.setProperty('background-attachment', 'fixed');
-    document.body.style.setProperty('background-position', 'center');
-    document.body.style.setProperty('background-repeat', 'no-repeat');
-    // Use ::before background
-    document.body.style.setProperty('--bg-url', `url('${state.bg}')`);
-    document.body.style.setProperty('--bg-overlay', 'rgba(0,0,0,.45)');
-    // Update pseudo-element via stylesheet (already using assets/bg-default.png in CSS). We can just swap by setting inline style:
-    document.body.beforeStyleApplied = true;
-    document.querySelector('body').style.setProperty('--dummy', Math.random()); // noop
-    document.body.dispatchEvent(new Event('bgchange'));
-    // Hack: replace the background of ::before by toggling a class
-    document.body.classList.toggle('bg-reapply');
-    const styleEl = document.getElementById('dynamic-bg') || (()=>{ const s=document.createElement('style'); s.id='dynamic-bg'; document.head.appendChild(s); return s; })();
-    styleEl.textContent = `body::before{ background-image:url('${state.bg}'); }`;
-  }
+  const mkYear = (label, tris) => {
+    const y = document.createElement('div'); y.className='year-block';
+    const title = document.createElement('div'); title.className='year-title'; title.textContent = label;
+    y.appendChild(title);
 
-  // ----- Render -----
-  const yearsEl = document.getElementById('years');
-  function render(){
-    yearsEl.innerHTML = '';
-    let totalCourses = 0;
-    let approvedCount = 0;
-    let noteSum = 0, noteCount = 0;
-    const y1 = [], y2 = [], y3 = [];
-    const triOrder = curriculum.map(s => s.tri);
-    const triApprovedMap = {}; // tri => boolean (all approved)
+    const grid = document.createElement('div'); grid.className='tri-grid';
 
-    // Pre-calc tri completion
-    for(const sec of curriculum){
-      const tri = sec.tri;
-      const allApproved = sec.courses.every(c => !!state.approvals[courseId(tri, c.title)]);
-      triApprovedMap[tri] = allApproved;
-    }
+    for(const tri of tris){
+      const sec = curriculum.find(s => s.tri===tri);
+      const col = document.createElement('div'); col.className='tri-col';
+      const head = document.createElement('div'); head.className='tri-head'; head.textContent = tri.replace('T','Trimestre ');
+      col.appendChild(head);
 
-    // Build sections
-    for(let i=0;i<curriculum.length;i++){
-      const sec = curriculum[i];
-      const tri = sec.tri;
-      const secId = triId(tri);
-      totalCourses += sec.courses.length;
-
-      const details = document.createElement('details');
-      details.className = 'year';
-      details.open = state.expanded[secId] ?? (i === 0); // first open by default
-      details.dataset.tri = tri;
-
-      const sum = document.createElement('summary');
-      sum.className = 'year-title';
-      sum.innerHTML = `<div style="font-weight:900;">${sec.year}º año · ${tri}</div>`;
-      sum.addEventListener('click', () => {
-        state.expanded[secId] = !details.open;
-        saveState();
-      });
-      details.appendChild(sum);
-
-      const grid = document.createElement('div');
-      grid.className = 'grid';
-
-      // Determine if trimester is unlocked
       const triIndex = triOrder.indexOf(tri);
       let unlockedByPrev = true;
       if(triIndex > 0){
@@ -371,325 +395,173 @@
       for(const c of sec.courses){
         const id = courseId(tri, c.title);
         const approved = !!state.approvals[id];
-        const note = state.notes[id];
         const authorized = !!state.auth[id];
 
-        const card = document.createElement('div');
-        card.className = 'card';
-        if(approved) card.classList.add('approved');
-
-        // Blocking logic
+        // prereq check
         let blocked = !unlockedByPrev;
         if(c.prereq){
-          const prereqId = courseId(triOrder[triIndex-1] || 'T7', c.prereq.includes('II') || c.title.includes('II') ? c.prereq.replace(' II',' I') : c.prereq);
           const prereqTriIndex = curriculum.findIndex(s => s.courses.some(cc => cc.title === c.prereq));
-          const prereqTri = prereqTriIndex>=0 ? curriculum[prereqTriIndex].tri : 'T7';
+          const prereqTri = prereqTriIndex>=0 ? curriculum[prereqTriIndex].tri : '';
           const prereqCourseId = courseId(prereqTri, c.prereq);
           const prereqApproved = !!state.approvals[prereqCourseId];
           if(!prereqApproved){ blocked = true; }
         }
         if(authorized){ blocked = false; }
 
-        // Card content
-        const title = document.createElement('div');
-        title.className = 'title';
-        title.textContent = c.title;
-        card.appendChild(title);
+        const div = document.createElement('div');
+  div.className = `course ${c.tag.toLowerCase()} ${approved?'approved':''} ${blocked?'blocked':''} ${authorized?'authorized':''}`;
+        div.setAttribute('role','button'); div.setAttribute('tabindex','0');
+        div.setAttribute('aria-pressed', approved? 'true':'false');
+        div.innerHTML = `<span class="t">${c.title}</span>`;
 
-        const tag = document.createElement('div');
-        tag.className = 'tag';
-        const cls = c.tag.toLowerCase();
-        tag.innerHTML = `<span class="pill ${cls}">${c.tag}</span>`;
-        card.appendChild(tag);
-
-        const actions = document.createElement('div');
-        actions.className = 'actions';
-        // note input
-        const noteInput = document.createElement('input');
-        noteInput.type = 'number';
-        noteInput.step = '0.1'; noteInput.min='1.0'; noteInput.max='7.0';
-        noteInput.placeholder='Nota';
-        noteInput.inputMode='decimal';
-        noteInput.className = 'note';
-        noteInput.value = (note ?? '').toString();
-        noteInput.addEventListener('change', ()=>{
-          const v = parseFloat(noteInput.value.replace(',', '.'));
-          if(isNaN(v)){ delete state.notes[id]; noteInput.value=''; }
-          else{
-            state.notes[id] = Math.max(1.0, Math.min(7.0, v));
-            noteInput.value = state.notes[id].toFixed(1);
-          }
-          saveState(); updateMetrics();
-        });
-        actions.appendChild(noteInput);
-
-        // approve checkbox
-        const approve = document.createElement('label');
-        approve.className = 'approve';
-        approve.innerHTML = `<input type="checkbox" ${approved?'checked':''} aria-label="Marcar ${c.title} como aprobado"><span>Aprobado</span>`;
-        const approveCb = approve.querySelector('input');
-        approveCb.addEventListener('change', ()=>{
-          state.approvals[id] = approveCb.checked;
-          if(state.approvals[id]) card.classList.add('approved'); else card.classList.remove('approved');
-          saveState();
-          render(); // re-render to refresh blocking and metrics
-          checkCompletion();
-        });
-        actions.appendChild(approve);
-        card.appendChild(actions);
-
-        // Authorization row (visible only in auth mode)
-        const authRow = document.createElement('div');
-        authRow.className = 'auth-row';
-        authRow.innerHTML = `<span class="auth-pill">${authorized? 'Autorizado' : 'Sin autorización'}</span>
-          <label class="switch auth-switch">
-            <input type="checkbox" ${authorized?'checked':''}>
-            <span class="knob"></span>
-          </label>`;
-        const authCb = authRow.querySelector('input');
-        authCb.addEventListener('change', ()=>{
-          state.auth[id] = authCb.checked;
-          authRow.querySelector('.auth-pill').textContent = state.auth[id] ? 'Autorizado' : 'Sin autorización';
+        function toggle(){
+      const authEnabled = document.getElementById('authMode').checked;
+      if(blocked){
+        if(authEnabled){
+          state.auth[id] = !authorized; // toggle per-course authorization
           saveState(); render();
-        });
-        card.appendChild(authRow);
-
-        // Blocked overlay
-        if(blocked){
-          const overlay = document.createElement('div');
-          overlay.className = 'blocked-overlay';
-          const texts = [];
-          if(!unlockedByPrev) texts.push('Bloqueado por trimestre anterior');
-          if(c.prereq){
-            const prereqTriIndex = curriculum.findIndex(s => s.courses.some(cc => cc.title === c.prereq));
-            const prereqTri = prereqTriIndex>=0 ? curriculum[prereqTriIndex].tri : '';
-            texts.push('Requiere: '+c.prereq+(prereqTri?` (${prereqTri})`:''));
-          }
-          overlay.innerHTML = texts.join('<br>') + '<br>Active “Modo autorización” para habilitar.';
-          card.appendChild(overlay);
-          // Disable interactions (except auth)
-          noteInput.disabled = true;
-          approveCb.disabled = true;
         }
-
-        // Accumulate progress metrics
-        if(approved) approvedCount++;
-        if(state.notes[id] !== undefined){ noteSum += state.notes[id]; noteCount++; }
-
-        grid.appendChild(card);
-
-        // Year groups
-        if(sec.year===1) y1.push(approved);
-        if(sec.year===2) y2.push(approved);
-        if(sec.year===3) y3.push(approved);
+        return;
       }
-
-      details.appendChild(grid);
-      yearsEl.appendChild(details);
-    }
-
-    updateMetrics(totalCourses, approvedCount, noteSum, noteCount, y1, y2, y3);
-    // Auth mode visibility
-    document.body.classList.toggle('show-auth', document.getElementById('authMode').checked);
-  }
-
-  // ----- Metrics -----
-  function updateMetrics(totalCourses, approvedCount, noteSum, noteCount, y1, y2, y3){
-    if(totalCourses===undefined){
-      // recompute quickly
-      let t=0,a=0,ns=0,nc=0, y1=[], y2=[], y3=[];
-      for(const sec of curriculum){
-        for(const c of sec.courses){
-          const id = courseId(sec.tri, c.title);
-          t++; if(state.approvals[id]) a++;
-          if(state.notes[id] !== undefined){ ns += state.notes[id]; nc++; }
-          (sec.year===1?y1:sec.year===2?y2:y3).push(!!state.approvals[id]);
-        }
-      }
-      totalCourses=t; approvedCount=a; noteSum=ns; noteCount=nc;
-    }
-    const pct = totalCourses? Math.round((approvedCount/totalCourses)*100):0;
-    document.getElementById('barGlobal').style.width = pct + '%';
-    document.getElementById('pctGlobal').textContent = pct + '%';
-
-    const avg = noteCount? (noteSum/noteCount): null;
-    document.getElementById('avgGlobal').textContent = avg? avg.toFixed(2) : '—';
-    let dist = 'Sin promedio';
-    if(avg !== null){
-      if(avg >= 6.0) dist = 'Aprobado con Distinción Máxima';
-      else if(avg >= 5.0) dist = 'Aprobado con Distinción';
-      else if(avg >= 4.0) dist = 'Aprobado';
-      else dist = 'Reprobado';
-    }
-    document.getElementById('distGlobal').textContent = dist;
-
-    const setYear = (arr, barId, pctId) => {
-      const per = arr.length? Math.round(arr.filter(Boolean).length / arr.length * 100) : 0;
-      document.getElementById(barId).style.width = per + '%';
-      document.getElementById(pctId).textContent = per + '%';
-    };
-    setYear(y1, 'barY1', 'pctY1');
-    setYear(y2, 'barY2', 'pctY2');
-    setYear(y3, 'barY3', 'pctY3');
-  }
-
-  // ----- Completion check + confetti -----
-  function checkCompletion(){
-    const all = curriculum.flatMap(sec => sec.courses.map(c => courseId(sec.tri, c.title)));
-    const done = all.every(id => !!state.approvals[id]);
-    const modal = document.getElementById('modalCongrats');
-    if(done){
-      modal.classList.add('open');
-      runConfetti();
-    }else{
-      modal.classList.remove('open');
-      stopConfetti();
-    }
-  }
-
-  // Minimal confetti (no audio, visual only)
-  let confettiAnim = null;
-  function runConfetti(){
-    const canvas = document.getElementById('confetti');
-    const ctx = canvas.getContext('2d');
-    let w = canvas.width = window.innerWidth;
-    let h = canvas.height = window.innerHeight;
-    const pieces = Array.from({length: 160}, () => ({
-      x: Math.random()*w,
-      y: Math.random()*-h,
-      size: 6+Math.random()*8,
-      speed: 1+Math.random()*3,
-      angle: Math.random()*Math.PI*2,
-    }));
-    function onResize(){
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', onResize);
-    function draw(){
-      ctx.clearRect(0,0,w,h);
-      for(const p of pieces){
-        p.y += p.speed;
-        p.angle += 0.05;
-        const s = p.size * (0.6 + 0.4*Math.sin(p.angle));
-        ctx.fillStyle = ['#22d3ee','#60a5fa','#f59e0b','#10b981','#a78bfa'][Math.floor(Math.random()*5)];
-        ctx.fillRect(p.x, p.y, s, s*0.6);
-        if(p.y > h+20){ p.y = -20; p.x = Math.random()*w; }
-      }
-      confettiAnim = requestAnimationFrame(draw);
-    }
-    draw();
-  }
-  function stopConfetti(){
-    if(confettiAnim){ cancelAnimationFrame(confettiAnim); confettiAnim = null; }
-  }
-
-  // ----- Menu actions -----
-  function setupMenu(){
-    const menu = document.getElementById('menu');
-    const btn = document.getElementById('menuBtn');
-    const panel = document.getElementById('menuPanel');
-    btn.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      const open = menu.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open?'true':'false');
-    });
-    document.addEventListener('click', (e)=>{
-      if(!menu.contains(e.target)){ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
-    });
-
-    // Auth mode toggle
-    const authMode = document.getElementById('authMode');
-    authMode.checked = false;
-    authMode.addEventListener('change', ()=>{
-      document.body.classList.toggle('show-auth', authMode.checked);
-    });
-
-    // Expand/Collapse
-    document.getElementById('expandAll').addEventListener('click', ()=>{
-      document.querySelectorAll('details.year').forEach(d => { d.open = true; state.expanded[triId(d.dataset.tri)] = true; });
-      saveState();
-    });
-    document.getElementById('collapseAll').addEventListener('click', ()=>{
-      document.querySelectorAll('details.year').forEach(d => { d.open = false; state.expanded[triId(d.dataset.tri)] = false; });
-      saveState();
-    });
-
-    // Export
-    document.getElementById('exportBtn').addEventListener('click', ()=>{
-      const data = JSON.stringify(state, null, 2);
-      const blob = new Blob([data], {type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'malla-estado.json'; a.click();
-      setTimeout(()=>URL.revokeObjectURL(url), 500);
-    });
-    // Import
-    const fileImport = document.getElementById('fileImport');
-    document.getElementById('importBtn').addEventListener('click', ()=> fileImport.click());
-    fileImport.addEventListener('change', ()=>{
-      const file = fileImport.files[0]; if(!file) return;
-      const reader = new FileReader();
-      reader.onload = ()=>{
-        try{
-          const data = JSON.parse(reader.result);
-          state = { ...defaultState, ...data };
+      state.approvals[id] = !approved;
           saveState();
-          applyBackground();
           render();
           checkCompletion();
-          alert('Importación exitosa.');
-        }catch(e){ alert('Archivo inválido.'); }
-      };
-      reader.readAsText(file);
-    });
+        }
+        div.addEventListener('click', toggle);
+        div.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); }});
 
-    // Reset
-    document.getElementById('resetBtn').addEventListener('click', ()=>{
-      if(confirm('¿Seguro que deseas reiniciar todo?')){
-        state = structuredClone(defaultState);
-        saveState(); applyBackground(); render(); checkCompletion();
+        col.appendChild(div);
       }
-    });
 
-    // Background
-    const fileBg = document.getElementById('fileBg');
-    document.getElementById('bgBtn').addEventListener('click', ()=> fileBg.click());
-    fileBg.addEventListener('change', ()=> {
-      const file = fileBg.files[0]; if(!file) return;
-      const reader = new FileReader();
-      reader.onload = ()=>{
-        state.bg = reader.result; // base64 data URL
-        saveState(); applyBackground();
-      };
-      reader.readAsDataURL(file);
-    });
+      grid.appendChild(col);
+    }
 
-    // Congrats modal buttons
-    document.getElementById('closeCongrats').addEventListener('click', ()=>{
-      document.getElementById('modalCongrats').classList.remove('open');
-      stopConfetti();
-    });
-    document.getElementById('resetFromCongrats').addEventListener('click', ()=>{
+    y.appendChild(grid);
+    yearsContainer.appendChild(y);
+  };
+
+  mkYear('PRIMER AÑO', ['T1','T2','T3']);
+  mkYear('SEGUNDO AÑO', ['T4','T5','T6']);
+  mkYear('TERCER AÑO', ['T7','T8']);
+
+  updateProgress();
+}
+
+function updateProgress(){
+  // compute progress by approvals
+  let total=0, approved=0;
+  const perYear = {1:{t:0,a:0},2:{t:0,a:0},3:{t:0,a:0}};
+  for(const sec of curriculum){
+    for(const c of sec.courses){
+      const id = courseId(sec.tri, c.title);
+      total++; if(state.approvals[id]) approved++;
+      perYear[sec.year].t++; if(state.approvals[id]) perYear[sec.year].a++;
+    }
+  }
+  const pct = total? Math.round(approved/total*100):0;
+  document.getElementById('barGlobal').style.width = pct+'%';
+  document.getElementById('pctGlobal').textContent = pct+'%';
+  const yPcts = [
+    perYear[1].t? Math.round(perYear[1].a/perYear[1].t*100):0,
+    perYear[2].t? Math.round(perYear[2].a/perYear[2].t*100):0,
+    perYear[3].t? Math.round(perYear[3].a/perYear[3].t*100):0,
+  ];
+  ['Y1','Y2','Y3'].forEach((k,i)=>{
+    document.getElementById('bar'+k).style.width = yPcts[i]+'%';
+    document.getElementById('pct'+k).textContent = yPcts[i]+'%';
+  });
+}
+
+// Completion + confetti
+function checkCompletion(){
+  const all = curriculum.flatMap(sec => sec.courses.map(c => courseId(sec.tri, c.title)));
+  const done = all.every(id => !!state.approvals[id]);
+  const modal = document.getElementById('modalCongrats');
+  if(done){ modal.classList.add('open'); runConfetti(); }
+  else { modal.classList.remove('open'); stopConfetti(); }
+}
+
+let confettiAnim = null;
+function runConfetti(){
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = window.innerWidth;
+  let h = canvas.height = window.innerHeight;
+  const pieces = Array.from({length: 160}, () => ({
+    x: Math.random()*w, y: Math.random()*-h, size: 6+Math.random()*8,
+    speed: 1+Math.random()*3, angle: Math.random()*Math.PI*2,
+  }));
+  function onResize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', onResize);
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    for(const p of pieces){
+      p.y += p.speed; p.angle += 0.05;
+      const s = p.size * (0.6 + 0.4*Math.sin(p.angle));
+      ctx.fillStyle = ['#22d3ee','#60a5fa','#f59e0b','#10b981','#a78bfa'][Math.floor(Math.random()*5)];
+      ctx.fillRect(p.x, p.y, s, s*0.6);
+      if(p.y > h+20){ p.y = -20; p.x = Math.random()*w; }
+    }
+    confettiAnim = requestAnimationFrame(draw);
+  }
+  draw();
+}
+function stopConfetti(){ if(confettiAnim){ cancelAnimationFrame(confettiAnim); confettiAnim = null; } }
+
+// Menu
+function setupMenu(){
+  const menu = document.getElementById('menu');
+  const btn = document.getElementById('menuBtn');
+  const panel = document.getElementById('menuPanel');
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open?'true':'false');
+  });
+  document.addEventListener('click', (e)=>{
+    if(!menu.contains(e.target)){ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+  });
+
+  // Auth mode
+  const authMode = document.getElementById('authMode');
+  authMode.checked = false;
+  authMode.addEventListener('change', ()=>{
+    document.body.classList.toggle('show-auth', authMode.checked);
+  });
+
+    
+  // Reset
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    if(confirm('¿Seguro que deseas reiniciar todo?')){
       state = structuredClone(defaultState);
       saveState(); applyBackground(); render(); checkCompletion();
-      document.getElementById('modalCongrats').classList.remove('open');
-      stopConfetti();
-    });
-  }
+    }
+  });
 
-  // ----- Service worker -----
-  if('serviceWorker' in navigator){
-    window.addEventListener('load', ()=>{
-      navigator.serviceWorker.register('./sw.js').catch(()=>{});
-    });
-  }
+  // Congrats modal buttons
+  document.getElementById('closeCongrats').addEventListener('click', ()=>{
+    document.getElementById('modalCongrats').classList.remove('open'); stopConfetti();
+  });
+  document.getElementById('resetFromCongrats').addEventListener('click', ()=>{
+    state = structuredClone(defaultState);
+    saveState(); applyBackground(); render(); checkCompletion();
+    document.getElementById('modalCongrats').classList.remove('open'); stopConfetti();
+  });
+}
 
-  // On load
-  applyBackground();
-  setupMenu();
-  render();
-  checkCompletion();
-  </script>
+// Service worker
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
+
+applyBackground();
+setupMenu();
+render();
+checkCompletion();
+
+</script>
 </body>
 </html>

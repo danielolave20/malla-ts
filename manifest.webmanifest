@@ -1,12 +1,12 @@
 {
-  "name": "Malla Curricular - Trabajo Social",
+  "name": "Malla Curricular – Trabajo Social",
   "short_name": "Malla TS",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0b1220",
-  "theme_color": "#0b1220",
-  "orientation": "any",
+  "theme_color": "#1e293b",
+  "description": "Malla curricular de Trabajo Social (Advance) con bloqueo por trimestre, prerrequisitos, autorizaciones y progreso. Funciona offline.",
   "icons": [
     {
       "src": "icons/icon-192.png",
